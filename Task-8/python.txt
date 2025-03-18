@@ -1,0 +1,21 @@
+def digit(x):
+    
+    if not isinstance(x, int) or x < 0 or x > 9:
+        raise ValueError("Input must (0-9).")
+    
+    total = 0
+    str_num = ""
+    values = []
+
+    #  X + XX + XXX + XXXX
+    for i in range(1, 5):
+        str_num += str(x)
+        values.append(str_num)
+        total += int(str_num)
+    
+    
+    expression = " + ".join(values)
+    print(f"{total} ({expression})")
+
+if __name__ == "__main__":
+     digit(3)

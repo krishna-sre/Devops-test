@@ -1,0 +1,48 @@
+# Python script to manipulate devops-test.txt
+
+def nginx_and_version(devops-test):
+    nginx = False
+    version = False
+    content = " "
+
+    # Read file content
+    with open(devops-test, 'r') as file:
+        content = file.read()
+
+    # Check if 'nginx' exists
+    if 'nginx' in content.lower():
+        nginx = True
+
+    # Check if version '1.19' exists
+    if '1.19' in content:
+        version_found = True
+
+    return nginx_found, version_found, content
+
+def replace_version(content):
+    # Replace version 1.19 → 1.17
+    return content.replace('1.19', '1.17')
+
+def convert_to_uppercase(content):
+    return content.upper()
+
+def write_to_file(devops-test, new_content):
+    with open(devops-test, 'w') as file:
+        file.write(new_content)
+    print(f"File '{devops-test}' updated successfully.")
+
+devops-test = "devops-test.txt"
+
+nginx, version, content = nginx_and_version(devops-test)
+
+if nginx and version:
+    print("Nginx and version 1.19 found. Replacing version to 1.17")
+    content = replace_version(content)
+else:
+    print("Nginx/version not found.")
+
+# Convert to uppercase
+content = convert_to_uppercase(content)
+
+# updated the content to file
+write_to_file(devops-test, content)

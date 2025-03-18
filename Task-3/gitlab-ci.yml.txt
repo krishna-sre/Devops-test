@@ -1,0 +1,48 @@
+stages:
+  - build
+  - security scan
+  - push
+  - k8s deploy
+  - notify
+
+variables:
+  REGISTRY: "https://private-docker-registry.com"
+  IMAGE_NAME: "https://private-docker-registry.com/:nginx:1.19"
+
+before_script:
+  - docker login -u $USER -p $PASSWORD $REGISTRY
+
+build:
+  stage: build
+  script:
+    - docker build -t ${IMAGE_NAME}:$BUILD_NUMBER Dockerfile
+
+security scan:
+  stage: security scan
+  image: aquasec/trivy:latest
+  script:
+    - trivy image --exit-code 1 --severity HIGH,CRITICAL ${IMAGE_NAME}:$BUILD_NUMBER || true
+
+push:
+  stage: push
+  script:
+    - docker push ${IMAGE_NAME}:$BUILD_NUMBER
+
+k8s deploy:                      # skipping K8S conf part
+  stage: k8s deploy
+  Cluser info:
+  script:
+    - kubectl apply -f statefulset.yaml
+    - kubectl rollout status statefulset/nginx-statefulset
+
+notify:
+  stage: notify
+  script:
+    - echo "Deployment successful" | mail -s "Success" krishnareddy.sre@gmail.com
+  when: on_success
+
+failure_notify:
+  stage: notify
+  script:
+    - echo "Pipeline failed" | mail -s "Failed" krishnareddy.sre@gmail.com
+  when: on_failure

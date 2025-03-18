@@ -1,0 +1,16 @@
+def fibonacci(value):
+    a, b = 0, 1
+    sum = 0
+    count = 0
+
+    while count < value:
+        a, b = b, a + b
+        if a % 2 == 0:
+            sum += a
+            count += 1
+
+    return sum
+
+if __name__ == "__main__":
+    result = fibonacci(100)
+    print("Sum of first 100 even Fibonacci numbers:", result)

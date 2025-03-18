@@ -1,0 +1,24 @@
+#By using devops-test file for manipulating the data.
+
+#Find the nginx and version in the file. If nginx and version is there, changing the version of nginx from 1.19 to 1.17
+
+#!/bin/bash
+
+file="devops-test.txt"
+# Check nginx is there or not in file 
+nginx = $(grep -o 'nginx *' "$file")
+#check the existing version
+version= $(awk '/nginx/ && /1\.19/ {match($0, /[0-9]+\.[0-9]+/, arr);}') 
+
+# Replace version 1.19 → 1.17 using sed
+if [$Version = 1.19 && $nginx = nginx];
+  sed 's/nginx [^0-9]*1\.19/nginx 1.17/g' "$file" 
+else
+  echo "nginx/version not found"
+
+fi
+
+
+#convert all data to capital letters by using tr
+
+data = $(tr 'a-z' 'A-Z' "devops-test.txt")

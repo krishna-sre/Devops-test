@@ -1,0 +1,22 @@
+# lite weight Nginx 1.19 base image
+FROM nginx:1.19-alpine
+
+LABEL owner/maintainer="krishnareddy.sre@gmail.com"
+
+#Remove default conf file due to security
+RUN rm /etc/nginx/conf.d/default.conf
+
+# custom configuration file for better security
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Non root user for restrict access from third party user
+USER nginx
+
+EXPOSE 80
+
+# Healthcheck
+HEALTHCHECK --interval=30s --timeout=5s \ 
+CMD wget -q --spider http://localhost/ || exit 1
+
+# Command to run nginx
+CMD ["nginx", "-g", "daemon off;"]

@@ -1,0 +1,6 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+    <h1>Welcome to Cision DevOps Test</h1>
+</body>
+</html>

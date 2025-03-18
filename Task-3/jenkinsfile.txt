@@ -1,0 +1,61 @@
+pipeline {
+    agent {label: slave-node}
+
+    environment {
+        REGISTRY = 'https://private-docker-registry.com/'  #  credentials from secrete manager like aws secrets ot hashicorp vault
+        IMAGE_NAME = 'https://private-docker-registry.com/:nginx:1.19'
+        K8S_CREDENTIALS = 'cluster credentials'  # credentials from secrete manager like aws secrets ot hashicorp vault
+    }
+
+    stages {
+
+        stage('Git Checkout Code') {
+            steps {
+                git branch: 'main', url: 'git@gitlab.com:your-user/nginx-repo.git'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    docker build -t ${IMAGE_NAME}:$BUILD_NUMBER Dockerfile
+                }
+            }
+        }
+
+        stage('Run Security Scan') {
+            steps {
+                sh 'trivy image --exit-code 1 --severity HIGH,CRITICAL ${IMAGE_NAME}:$BUILD_NUMBER || true'
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                withDockerRegistry([credentialsId: 'docker-credentials', url: "${REGISTRY}"]) {
+                    sh "docker push ${IMAGE_NAME}:$BUILD_NUMBER"
+                }
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                withCredentials([file(credentialsId: "${K8S_CREDENTIALS}")]) {
+                    sh """
+                    kubectl apply statefulset.yaml --kubeconfig=****   
+                    kubectl rollout status ***** --kubeconfig=****
+                    """
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Deployment successful'| mail -s "success" krishnareddy.sre@gmail.com
+            
+        }
+        failure {
+            echo 'Pipeline failed' | mail -s "failed" krishnareddy.sre@gmail.com
+        }
+    }
+}
