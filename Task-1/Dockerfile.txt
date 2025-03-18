@@ -1,4 +1,4 @@
-# lite weight Nginx 1.19 base image
+# light weight Nginx 1.19 base image
 FROM nginx:1.19-alpine
 
 LABEL owner/maintainer="krishnareddy.sre@gmail.com"
@@ -10,7 +10,7 @@ RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/nginx.conf
 
 # Non root user for restrict access from third party user
-USER nginx
+USER krishna
 
 EXPOSE 80
 

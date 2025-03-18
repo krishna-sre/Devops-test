@@ -10,7 +10,7 @@ nginx = $(grep -o 'nginx *' "$file")
 #check the existing version
 version= $(awk '/nginx/ && /1\.19/ {match($0, /[0-9]+\.[0-9]+/, arr);}') 
 
-# Replace version 1.19 → 1.17 using sed
+# Replace version 1.19 to 1.17 using sed
 if [$Version = 1.19 && $nginx = nginx];
   sed 's/nginx [^0-9]*1\.19/nginx 1.17/g' "$file" 
 else

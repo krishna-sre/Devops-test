@@ -2,16 +2,16 @@ pipeline {
     agent {label: slave-node}
 
     environment {
-        REGISTRY = 'https://private-docker-registry.com/'  #  credentials from secrete manager like aws secrets ot hashicorp vault
+        REGISTRY = 'https://private-docker-registry.com/'  #  credentials from secrete manager like aws secrets or hashicorp vault
         IMAGE_NAME = 'https://private-docker-registry.com/:nginx:1.19'
-        K8S_CREDENTIALS = 'cluster credentials'  # credentials from secrete manager like aws secrets ot hashicorp vault
+        K8S_CREDENTIALS = 'cluster credentials'  # credentials from secrete manager like aws secrets or hashicorp vault
     }
 
     stages {
 
         stage('Git Checkout Code') {
             steps {
-                git branch: 'main', url: 'git@gitlab.com:your-user/nginx-repo.git'
+                git branch: 'main', url: 'git@github.com:krishna-sre/Devops-test.git
             }
         }
 

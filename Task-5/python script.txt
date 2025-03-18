@@ -33,7 +33,7 @@ def write_to_file(devops-test, new_content):
 
 devops-test = "devops-test.txt"
 
-nginx, version, content = nginx_and_version(devops-test)
+nginx_found, version_found, content = nginx_and_version(devops-test)
 
 if nginx and version:
     print("Nginx and version 1.19 found. Replacing version to 1.17")
