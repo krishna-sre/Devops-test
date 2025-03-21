@@ -10,7 +10,7 @@ RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/nginx.conf
 
 # Non root user for restrict access from third party user
-USER krishna
+USER nginx
 
 EXPOSE 80
 
